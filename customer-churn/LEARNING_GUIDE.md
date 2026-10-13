@@ -7,7 +7,7 @@
 3. **Describe patterns.** Calculate the overall churn proportion and churn conditional on contract and bill band. Plot contract rates, bill distributions by outcome, and bill-band rates. These reveal associations, not causes.
 4. **Split once.** Reserve 20% with `stratify=y` and `random_state=42`. Stratification keeps the minority churn class represented in both partitions.
 5. **Preprocess and fit.** Exclude `customerID`. For four numeric features, fill missing values with the training median and standardize. For categorical features, fill missing values with the training mode and one-hot encode. Each model's pipeline fits these steps only on its training input.
-6. **Evaluate on the holdout.** Report the same six metrics and confusion matrix for logistic regression and random forest. Do not tune thresholds or features based on these test results; that would turn the test into a validation set.
+6. **Evaluate on the holdout.** Report the same six metrics and confusion matrix for logistic regression and random forest. Export logistic-regression test predictions with customer IDs matched by the preserved row index; the ID is never a feature. Do not tune thresholds or features based on these test results; that would turn the test into a validation set.
 7. **Analyze in SQL.** Split the same CSV rows into customer and subscription tables by the genuine `customerID`. Verify both row counts and the foreign key. Run the five queries in `analysis.sql`.
 
 ## 2. Statistics used in EDA

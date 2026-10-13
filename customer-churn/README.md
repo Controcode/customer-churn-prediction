@@ -16,7 +16,11 @@ To obtain it again, save that raw CSV URL as `data/Telco-Customer-Churn.csv`, or
 Invoke-WebRequest 'https://raw.githubusercontent.com/IBM/telco-customer-churn-on-icp4d/master/data/Telco-Customer-Churn.csv' -OutFile 'data/Telco-Customer-Churn.csv'
 ```
 
-The CSV has one row per customer and includes demographics, subscribed services, charges, contract type, and the historical `Churn` label. It is a sample dataset, not a current population of real customers.
+The CSV has 7,043 customer rows. Its historical `Churn` label (`Yes`/`No`) is the target; contract, tenure, services, and charges are among the predictors. It is a sample dataset, not a current population of real customers.
+
+## Technology stack
+
+Python 3.11+, pandas, NumPy, scikit-learn, matplotlib, SQLite via Python's `sqlite3`, and Jupyter Notebook. pytest checks the notebook's actual code on a fresh temporary copy of the data.
 
 ## Install and run
 
@@ -32,6 +36,16 @@ python -m venv .venv
 If your machine has multiple Python installations, replace `python` in the first command with the full path to a Python 3.11+ interpreter. On macOS/Linux use `python3 -m venv .venv`, `.venv/bin/python -m pip install -r requirements.txt`, `.venv/bin/python -m ipykernel install --prefix .venv --name customer-churn --display-name 'Python (customer-churn .venv)'`, and `.venv/bin/jupyter-lab`. Open `churn_analysis.ipynb`, choose **Python (customer-churn .venv)**, and **Run All**. The notebook creates `data/churn.sqlite` locally. This generated database is gitignored. Run the notebook from this directory so its relative data and SQL paths resolve.
 
 For a command-line recheck on Windows, run `.\.venv\Scripts\jupyter-nbconvert.exe --to notebook --execute --inplace churn_analysis.ipynb`. On macOS/Linux use `.venv/bin/jupyter-nbconvert` with the same arguments.
+
+The optional two-command CLI uses the notebook rather than duplicating its analysis:
+
+```powershell
+.\.venv\Scripts\python.exe run_analysis.py analyze
+.\.venv\Scripts\python.exe run_analysis.py sql
+.\.venv\Scripts\python.exe -m pytest -q tests
+```
+
+Use `.venv/bin/python` in these commands on macOS/Linux. `analyze` executes the notebook from a fresh kernel, rebuilds `data/churn.sqlite`, and writes [`outputs/test_predictions.csv`](outputs/test_predictions.csv). `sql` prints the five saved SQL reports; run `analyze` first if the local database does not exist. The prediction CSV has the original customer ID, actual 0/1 churn label, logistic-regression prediction, and predicted churn probability for the 1,409 test rows. IDs are matched by the preserved test-row index and are never model features.
 
 ## Methodology
 
@@ -71,3 +85,5 @@ The notebook created 7,043 rows in each table, with no foreign-key violations, a
 - The descriptive EDA uses all rows, including the eventual holdout. Modeling choices here were fixed before examining held-out model results; repeated iteration based on that holdout would invalidate it.
 
 Read [`LEARNING_GUIDE.md`](LEARNING_GUIDE.md) for equations, SQL explanations, and 15 interview questions.
+
+[`INTERVIEW_NOTES.md`](INTERVIEW_NOTES.md) is a shorter speaking outline with technical follow-up prompts.
