@@ -3,3 +3,10 @@
 __pycache__/
 *.py[cod]
 data/churn.sqlite
+.pytest_cache/
+*.tmp
+*.log
+*.pkl
+*.joblib
+outputs/*
+!outputs/test_predictions.csv
