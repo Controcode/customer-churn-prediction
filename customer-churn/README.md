@@ -35,17 +35,9 @@ python -m venv .venv
 
 If your machine has multiple Python installations, replace `python` in the first command with the full path to a Python 3.11+ interpreter. On macOS/Linux use `python3 -m venv .venv`, `.venv/bin/python -m pip install -r requirements.txt`, `.venv/bin/python -m ipykernel install --prefix .venv --name customer-churn --display-name 'Python (customer-churn .venv)'`, and `.venv/bin/jupyter-lab`. Open `churn_analysis.ipynb`, choose **Python (customer-churn .venv)**, and **Run All**. The notebook creates `data/churn.sqlite` locally. This generated database is gitignored. Run the notebook from this directory so its relative data and SQL paths resolve.
 
-For a command-line recheck on Windows, run `.\.venv\Scripts\jupyter-nbconvert.exe --to notebook --execute --inplace churn_analysis.ipynb`. On macOS/Linux use `.venv/bin/jupyter-nbconvert` with the same arguments.
+Run every cell in the notebook to rebuild `data/churn.sqlite`, execute the five queries in [`analysis.sql`](analysis.sql), and write [`outputs/test_predictions.csv`](outputs/test_predictions.csv). The prediction CSV has the original customer ID, actual 0/1 churn label, logistic-regression prediction, and predicted churn probability for the 1,409 test rows. IDs are matched by the preserved test-row index and are never model features.
 
-The optional two-command CLI uses the notebook rather than duplicating its analysis:
-
-```powershell
-.\.venv\Scripts\python.exe run_analysis.py analyze
-.\.venv\Scripts\python.exe run_analysis.py sql
-.\.venv\Scripts\python.exe -m pytest -q tests
-```
-
-Use `.venv/bin/python` in these commands on macOS/Linux. `analyze` executes the notebook from a fresh kernel, rebuilds `data/churn.sqlite`, and writes [`outputs/test_predictions.csv`](outputs/test_predictions.csv). `sql` prints the five saved SQL reports; run `analyze` first if the local database does not exist. The prediction CSV has the original customer ID, actual 0/1 churn label, logistic-regression prediction, and predicted churn probability for the 1,409 test rows. IDs are matched by the preserved test-row index and are never model features.
+To run the existing tests, use `.\.venv\Scripts\python.exe -m pytest -q tests` on Windows or `.venv/bin/python -m pytest -q tests` on macOS/Linux. The tests execute notebook code in a temporary directory and do not depend on saved notebook outputs.
 
 ## Methodology
 
