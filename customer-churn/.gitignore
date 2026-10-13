@@ -10,3 +10,5 @@ data/churn.sqlite
 *.joblib
 outputs/*
 !outputs/test_predictions.csv
+INTERVIEW_NOTES.md
+LEARNING_GUIDE.md
