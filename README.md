@@ -75,7 +75,3 @@ The notebook created 7,043 rows in each table, with no foreign-key violations, a
 - One stratified split gives an understandable baseline, but scores can change with new customers or a different time period.
 - The 0.5 classification threshold is fixed for teaching. A real outreach program should select a threshold using validation data and explicit cost/capacity constraints, then test it on fresh data.
 - The descriptive EDA uses all rows, including the eventual holdout. Modeling choices here were fixed before examining held-out model results; repeated iteration based on that holdout would invalidate it.
-
-Read [`LEARNING_GUIDE.md`](LEARNING_GUIDE.md) for equations, SQL explanations, and 15 interview questions.
-
-[`INTERVIEW_NOTES.md`](INTERVIEW_NOTES.md) is a shorter speaking outline with technical follow-up prompts.
